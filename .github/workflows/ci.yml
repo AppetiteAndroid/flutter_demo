@@ -80,7 +80,7 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter build apk --${{ matrix.mode }} --flavor ${{ matrix.flavor }} -t lib/${{ matrix.target }} --dart-define-from-file=config/${{ matrix.config }}
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: android-${{ matrix.flavor }}-${{ matrix.mode }}-${{ github.sha }}
           path: build/app/outputs/flutter-apk/*.apk
@@ -99,7 +99,7 @@ jobs:
           cache: true
       - run: flutter pub get
       - run: flutter build ios --simulator --no-codesign --flavor development -t lib/main_development.dart --dart-define-from-file=config/development.json
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         with:
           name: ios-development-simulator-${{ github.sha }}
           path: build/ios/iphonesimulator/Runner.app
