@@ -1,0 +1,6 @@
+#include "Generated.xcconfig"
+LD_RUNPATH_SEARCH_PATHS=$(inherited) @executable_path/Frameworks
+// Xcode 26 simulators generate Swift compatibility headers only for the
+// destination architecture. Avoid compiling an unused x86_64 slice on Apple
+// Silicon during debug launch.
+ONLY_ACTIVE_ARCH=YES

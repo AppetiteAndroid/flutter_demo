@@ -1,0 +1,44 @@
+name: Prepare v1 release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  FLUTTER_VERSION: 3.47.1
+
+jobs:
+  validate-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: dart run tool/validate_release.dart --tag "${{ github.ref_name }}" --strict
+      - run: make release-check
+      - run: make build-android-dev
+      - run: make build-android-prod
+      - name: Checksums
+        run: sha256sum build/app/outputs/flutter-apk/*.apk > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: release-android-${{ github.ref_name }}
+          path: |
+            build/app/outputs/flutter-apk/*.apk
+            SHA256SUMS
+          retention-days: 30
+      - name: Create draft GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ github.ref_name }}" build/app/outputs/flutter-apk/*.apk SHA256SUMS --draft --verify-tag --title "Flutter Production Starter ${{ github.ref_name }}" --notes-file docs/RELEASE_NOTES_V1.0.0.md

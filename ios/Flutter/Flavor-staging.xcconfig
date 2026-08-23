@@ -1,0 +1,5 @@
+#include "Debug.xcconfig"
+APP_DISPLAY_NAME=Flutter Starter Staging
+PRODUCT_BUNDLE_IDENTIFIER=com.example.flutterstarter.staging
+DEEP_LINK_SCHEME=flutterstarter-staging
+APP_LINK_HOST=staging.example.invalid

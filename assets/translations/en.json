@@ -1,0 +1,163 @@
+{
+  "app": {
+    "title": "Flutter Starter"
+  },
+  "nav": {
+    "home": "Home",
+    "search": "Search",
+    "settings": "Settings",
+    "sign_in": "Sign in",
+    "offline_tasks": "Offline tasks"
+  },
+  "home": {
+    "title": "Production starter",
+    "welcome": "A runnable reference architecture",
+    "environment": "Environment",
+    "environment_values": {
+      "development": "Development",
+      "staging": "Staging",
+      "production": "Production"
+    },
+    "session": "Session",
+    "auth": "Authentication",
+    "auth_status": {
+      "initializing": "Initializing",
+      "guest": "Guest",
+      "authenticated": "Authenticated"
+    },
+    "subscription": "Subscription",
+    "subscription_status": {
+      "unknown": "Unknown",
+      "free": "Free",
+      "trial": "Trial",
+      "active": "Active",
+      "grace_period": "Grace period",
+      "expired": "Expired"
+    },
+    "premium": "Premium access",
+    "yes": "Yes",
+    "no": "No",
+    "demo": "Development session controls",
+    "guest": "Guest",
+    "free": "Free",
+    "trial": "Trial",
+    "active": "Active",
+    "expired": "Expired",
+    "logout": "Log out"
+  },
+  "settings": {
+    "title": "Settings",
+    "theme": {
+      "title": "Theme",
+      "system": "System",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "language": {
+      "title": "Language",
+      "english": "English",
+      "russian": "Russian"
+    },
+    "reset": "Reset settings",
+    "version": "Version"
+  },
+  "search": {
+    "title": "Reactive search",
+    "hint": "Search framework topics",
+    "empty_query": "Type at least two characters",
+    "no_results": "Nothing found",
+    "error": "Search failed",
+    "retry": "Retry"
+  },
+  "auth": {
+    "required": "Please sign in to continue",
+    "action": "Simulate sign in"
+  },
+  "errors": {
+    "network": "Check your connection and try again",
+    "timeout": "The request timed out",
+    "unauthorized": "Please sign in again",
+    "unknown": "Something went wrong"
+  },
+  "common": {
+    "loading": "Loading",
+    "try_again": "Try again"
+  },
+  "items": {
+    "count": {
+      "zero": "No items",
+      "one": "One item",
+      "other": "{} items"
+    }
+  },
+  "pagination": {
+    "title": "Pagination",
+    "error": "Could not load items",
+    "empty": "No items"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "explanation": "Enable notifications to try the local platform example.",
+    "allow": "Allow notifications",
+    "send": "Show test notification",
+    "test_title": "Starter notification",
+    "test_body": "Notification taps use typed route intents"
+  },
+  "offline": {
+    "title": "Offline-first tasks",
+    "empty": "No tasks yet. Local changes appear immediately.",
+    "add_hint": "Task title",
+    "actions": {
+      "add": "Add",
+      "delete": "Delete task",
+      "sync": "Sync now",
+      "retry": "Retry",
+      "keep_local": "Retry local version",
+      "use_server": "Use server version",
+      "close": "Close",
+      "cancel": "Cancel",
+      "reset": "Reset"
+    },
+    "status": {
+      "online": "Backend reachable",
+      "offline": "Offline — local data remains available",
+      "syncing": "Syncing changes",
+      "pending": "Pending changes: {}",
+      "blocked": "Changes requiring attention: {}",
+      "last_sync": "Last successful sync: {}"
+    },
+    "failure": {
+      "permanent": "This change was rejected and will not retry automatically.",
+      "conflict": "The server version changed. Choose a resolution."
+    },
+    "errors": {
+      "unauthorized": "Sign in to change tasks",
+      "validation": "Enter a task title between 1 and 200 characters",
+      "not_found": "The task no longer exists",
+      "unknown": "The local change could not be accepted"
+    },
+    "realtime": {
+      "connect": "Connect realtime",
+      "disconnect": "Disconnect realtime"
+    },
+    "dev": {
+      "title": "Development simulation tools",
+      "online": "Backend reachable",
+      "offline": "No interface",
+      "backend_down": "Backend unreachable",
+      "next_success": "Next: success",
+      "next_offline": "Next: offline",
+      "next_validationFailure": "Next: validation",
+      "next_conflict": "Next: conflict",
+      "next_rateLimited": "Next: rate limit",
+      "latency": "Toggle 2s latency",
+      "inspect": "Inspect outbox",
+      "outbox_empty": "The outbox is empty",
+      "outbox_item": "Attempt: {} · safe error: {}",
+      "socket_close": "Unexpected socket close",
+      "socket_message": "Fake incoming message",
+      "reset": "Reset local database",
+      "reset_confirm": "Delete all local demo tasks and pending operations?"
+    }
+  }
+}

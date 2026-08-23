@@ -1,0 +1,119 @@
+name: CI
+
+on:
+  push: {branches: [main]}
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FLUTTER_VERSION: 3.47.1
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+          cache-key: flutter-${{ runner.os }}-${{ env.FLUTTER_VERSION }}-${{ hashFiles('pubspec.lock') }}
+      - run: flutter pub get
+      - run: dart run tool/validate_translations.dart
+      - run: dart run tool/check_dependencies.dart
+      - run: dart run tool/scan_secrets.dart
+      - run: dart run build_runner build --delete-conflicting-outputs
+      - run: git diff --exit-code -- lib/core/database/app_database.g.dart
+      - run: dart format --set-exit-if-changed .
+      - run: flutter analyze
+      - run: flutter test
+      - run: flutter test test/v1_release_test.dart
+      - run: dart run tool/validate_release.dart
+
+  fresh-copy:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: dart run tool/verify_template.dart --mode fresh
+
+  rename-android:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: dart run tool/verify_template.dart --mode rename --android
+
+  android:
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        include:
+          - {flavor: development, mode: debug, target: main_development.dart, config: development.json}
+          - {flavor: production, mode: release, target: main_production.dart, config: production.json}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter build apk --${{ matrix.mode }} --flavor ${{ matrix.flavor }} -t lib/${{ matrix.target }} --dart-define-from-file=config/${{ matrix.config }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: android-${{ matrix.flavor }}-${{ matrix.mode }}-${{ github.sha }}
+          path: build/app/outputs/flutter-apk/*.apk
+          retention-days: 14
+
+  ios:
+    needs: verify
+    runs-on: macos-latest
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: flutter pub get
+      - run: flutter build ios --simulator --no-codesign --flavor development -t lib/main_development.dart --dart-define-from-file=config/development.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ios-development-simulator-${{ github.sha }}
+          path: build/ios/iphonesimulator/Runner.app
+          retention-days: 14
+
+  rename-ios:
+    needs: verify
+    runs-on: macos-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+      - run: dart run tool/verify_template.dart --mode rename --ios

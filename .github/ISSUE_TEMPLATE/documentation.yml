@@ -1,0 +1,17 @@
+name: Documentation issue
+description: Report inaccurate or missing onboarding guidance
+title: "[Docs]: "
+labels: [documentation]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page or command
+    validations:
+      required: true
+  - type: textarea
+    id: issue
+    attributes:
+      label: Problem and suggested correction
+    validations:
+      required: true
